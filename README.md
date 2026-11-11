@@ -17,6 +17,8 @@ La plupart des convertisseurs se contentent d'extraire le texte brut. Or, pour �
 
 - **Haute Performance (Multiprocessing)** : Traitement en parallèle sur plusieurs cœurs de processeur. Idéal pour convertir des dossiers entiers de documents en quelques secondes.
 - **OCR Intégré (Tesseract)** : Récupération de texte sur les PDF scannés ou dont l'encodage de police est défaillant.
+- **Smart Excel (Heuristique)** : Détection automatique du type de tableau. Si c'est une base de données, il garde les en-têtes. Si c'est un emploi du temps ou un formulaire, il s'adapte.
+- **Mode Sémantique (Optimisé IA)** : Transformation des tableaux Excel complexes (ex: emplois du temps) en texte linéaire et hiérarchisé. Le format idéal pour le RAG.
 - **Smart Chunking pour le RAG** : Découpage intelligent du Markdown en morceaux (chunks) avec chevauchement, prêts à être ingérés par une base vectorielle.
 - **Nettoyage Markdown** : Suppression automatique des artefacts de conversion (numéros de page isolés, puces hétérogènes, espaces insécables).
 - **100% Local** : Vos documents ne sont jamais envoyés sur un serveur externe. L'application fonctionne entièrement hors-ligne.
