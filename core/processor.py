@@ -13,23 +13,24 @@ from core.optimizer import (
     retirer_images, decouper_markdown
 )
 
-
 def _worker_convertir(args: Tuple[Path, int, Dict[str, Any], Optional[Path], str]) -> Dict[str, Any]:
-    """Fonction exécutée dans un processus séparé pour convertir un fichier.
-    
-    Args:
-        args: Un tuple contenant (fichier, index, options, dest_folder, nom_sortie).
-        
-    Returns:
-        Un dictionnaire contenant le statut de la conversion.
-    """
+    """Fonction exécutée dans un processus séparé pour convertir un fichier."""
     fichier, _, options, dest_folder, nom_sortie_unique = args
 
     try:
         converter = DocumentConverter()
-        md_raw = converter.convertir(fichier, use_ocr=options.get('ocr', False))
+        
+        # 1. Conversion (avec OCR et mode Excel)
+        md_raw = converter.convertir(
+            fichier, 
+            use_ocr=options.get('ocr', False),
+            excel_mode=options.get('excel_mode', "Automatique")
+        )
+        
+        # 2. Vérification de la qualité (c'est cette ligne qui manquait)
         avert = verifier_qualite(md_raw, fichier)
 
+        # 3. Post-traitement
         md = md_raw
         if fichier.suffix.lower() == ".docx" and options.get('retirer_images'):
             md = retirer_images(md)
@@ -38,6 +39,7 @@ def _worker_convertir(args: Tuple[Path, int, Dict[str, Any], Optional[Path], str
         if options.get('metadonnees'):
             md = ajouter_metadonnees(md, fichier)
 
+        # 4. Écriture sur le disque
         dossier_cible = dest_folder if dest_folder else fichier.parent
         dossier_cible.mkdir(parents=True, exist_ok=True)
         chemin_sortie = dossier_cible / nom_sortie_unique
@@ -61,14 +63,11 @@ def _worker_convertir(args: Tuple[Path, int, Dict[str, Any], Optional[Path], str
 
 
 class BatchProcessor:
-    """Orchestre le traitement par lots en utilisant le multiprocessing."""
-
     def __init__(self, callbacks: Dict[str, Any]) -> None:
         self.callbacks = callbacks
         self.stop_event = threading.Event()
 
     def collecter_fichiers(self, source: Path, mode: str, recursif: bool) -> List[Path]:
-        """Retourne la liste des fichiers à traiter selon le mode."""
         if mode == "fichier":
             return [source] if (source.is_file() and source.suffix.lower() in EXTENSIONS_VALIDES) else []
         if not source.is_dir():
@@ -81,13 +80,11 @@ class BatchProcessor:
         ]
 
     def traiter(self, fichiers: List[Path], options: Dict[str, Any], dest_folder: Optional[Path], max_workers: Optional[int] = None) -> None:
-        """Traite une liste de fichiers en parallèle."""
         reussis, echoues, avertissements, corpus, dernier_md = 0, [], [], [], ""
         total = len(fichiers)
         
         self.callbacks['log'](f"\n--- Début du traitement ({total} fichier(s)) ---")
         
-        # Préparation des tâches (gestion des collisions de noms)
         noms_utilises = set()
         taches = []
         for i, fichier in enumerate(fichiers, 1):
@@ -137,10 +134,8 @@ class BatchProcessor:
         except Exception as e:
             self.callbacks['log'](f"\n[Erreur critique] : {e}")
 
-        # Génération des fichiers de sortie globaux
         self._generer_sorties(corpus, options, dest_folder)
 
-        # Bilan final
         est_annule = self.stop_event.is_set()
         progress_final = 1.0 if (not est_annule and total) else 0.0
         self.callbacks['progress'](progress_final, f"{reussis}/{total} converti(s)")
@@ -148,7 +143,6 @@ class BatchProcessor:
         self.callbacks['finish'](reussis, total, echoues, avertissements, dernier_md, est_annule)
 
     def _generer_sorties(self, corpus: List[Tuple[Path, str]], options: Dict[str, Any], dest_folder: Optional[Path]) -> None:
-        """Génère les fichiers combinés (.md) et/ou JSONL si demandés."""
         if not corpus:
             return
 
@@ -171,7 +165,6 @@ class BatchProcessor:
                 self.callbacks['log'](f"\n[Erreur corpus JSONL] : {e}")
 
     def _ecrire_corpus_md(self, corpus: List[Tuple[Path, str]], dest: Optional[Path]) -> Path:
-        """Écrit tous les Markdown dans un seul fichier géant."""
         dossier = dest if dest else corpus[0][0].parent
         chemin = dossier / f"_corpus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
         with open(chemin, "w", encoding="utf-8") as f:
@@ -180,7 +173,6 @@ class BatchProcessor:
         return chemin
 
     def _ecrire_corpus_jsonl(self, corpus: List[Tuple[Path, str]], dest: Optional[Path], chunking: bool, chunk_size: int) -> Path:
-        """Écrit un fichier JSONL (avec ou sans Smart Chunking)."""
         dossier = dest if dest else corpus[0][0].parent
         chemin = dossier / f"_corpus_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jsonl"
         
