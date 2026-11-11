@@ -29,6 +29,7 @@ git clone https://github.com/ton-pseudo/Doc2MD-Pro.git
 cd Doc2MD-Pro
 pip install -r requirements.txt
 python main.py
+```
 
 
 ## 🧠 Comment ça marche ?
