@@ -1,52 +1,82 @@
 # ⚡ Doc2MD Pro — AI Document Optimizer
 
-> Convertissez vos PDF, Excel et Word en Markdown ultra-propre, prêt pour les LLM (ChatGPT, Claude) et les bases vectorielles (RAG).
+> Application de bureau (Windows) permettant de convertir des documents PDF, Word et Excel en Markdown structuré, optimisé pour les LLM (ChatGPT, Claude) et les bases de données vectorielles (RAG).
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-yellow)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 
-**Doc2MD Pro** est une application de bureau (Windows) 100% locale qui transforme vos documents en données exploitables par l'Intelligence Artificielle. Conçu avec une approche "Haute Performance" et "RAG-First", il résout les problèmes que les convertisseurs classiques ignorent.
+## 📖 À propos
 
-## 📸 Aperçu
+La plupart des convertisseurs se contentent d'extraire le texte brut. Or, pour être exploitable par une Intelligence Artificielle (ou une base RAG comme Pinecone/Qdrant), un document doit être nettoyé, structuré et correctement découpé. 
 
-![Interface de Doc2MD Pro](images/apercu.png)
+**Doc2MD Pro** a été conçu pour répondre à ce besoin spécifique. C'est un outil local qui prend en charge les cas complexes (PDF scannés, polices corrompues) et exporte les données dans les formats attendus par les pipelines IA.
 
 ## ✨ Fonctionnalités clés
 
-- 🚀 **Multiprocessing** : Convertissez des centaines de fichiers simultanément en utilisant tous les cœurs de votre processeur.
-- 🖨️ **OCR Intégré** : Récupérez le texte même sur les PDF scannés ou avec des polices corrompues (via Tesseract).
-- 🧠 **Smart Chunking (RAG)** : Découpez intelligemment vos documents en morceaux (chunks) avec chevauchement, prêts pour Pinecone, Qdrant ou LangChain.
-- 🧹 **Nettoyage Markdown** : Supprime les artefacts de conversion (ligatures, numéros de page, puces cassées).
-- 📦 **Export JSONL** : Format standard pour nourrir les bases de données vectorielles.
-- 🌙 **Interface Dark Pro** : Design moderne, fluide et intuitif.
+- **Haute Performance (Multiprocessing)** : Traitement en parallèle sur plusieurs cœurs de processeur. Idéal pour convertir des dossiers entiers de documents en quelques secondes.
+- **OCR Intégré (Tesseract)** : Récupération de texte sur les PDF scannés ou dont l'encodage de police est défaillant.
+- **Smart Chunking pour le RAG** : Découpage intelligent du Markdown en morceaux (chunks) avec chevauchement, prêts à être ingérés par une base vectorielle.
+- **Nettoyage Markdown** : Suppression automatique des artefacts de conversion (numéros de page isolés, puces hétérogènes, espaces insécables).
+- **100% Local** : Vos documents ne sont jamais envoyés sur un serveur externe. L'application fonctionne entièrement hors-ligne.
+- **Interface Moderne** : Interface CustomTkinter en mode sombre, fluide et réactive, même pendant les longs traitements.
 
-## 🚀 Installation rapide
+## 📸 Aperçu de l'interface
 
-### Option 1 : Télécharger l'exécutable (Windows)
-Téléchargez la dernière version dans l'onglet [Releases](lien_vers_tes_releases) et lancez `main.exe`. Aucune installation de Python requise.
+![Interface de Doc2MD Pro](images/apercu.png)
 
-### Option 2 : Lancer depuis le code source (Développeurs)
+## 🚀 Installation
+
+### Pour les utilisateurs (Windows)
+1. Rendez-vous dans l'onglet [Releases](../../releases).
+2. Téléchargez la dernière version de `Doc2MD-Pro-Windows.zip`.
+3. Décompressez le dossier et lancez `main.exe`. 
+*(Aucune installation de Python n'est nécessaire).*
+
+### Pour les développeurs (Code source)
 ```bash
-git clone https://github.com/ton-pseudo/Doc2MD-Pro.git
+# Cloner le dépôt
+git clone https://github.com/anfr/Doc2MD-Pro.git
 cd Doc2MD-Pro
+```
+```bash
+# Créer un environnement virtuel (recommandé)
+python -m venv .venv
+.venv\Scripts\activate
+```
+```bash
+# Installer les dépendances
 pip install -r requirements.txt
+```
+```bash
+# Lancer l'application
 python main.py
 ```
 
+**Note : Pour utiliser la fonctionnalité OCR, vous devez installer Tesseract OCR sur votre système.**
+## 🔄 Pipeline de traitement
+L'application suit un flux de travail strict pour garantir la qualité des données :
 
-## 🧠 Comment ça marche ?
-Extraction : MarkItDown (ou Tesseract si l'OCR est activé) extrait le texte brut.
+Extraction : Utilisation de markitdown ou Tesseract pour obtenir le texte brut.
 
-Nettoyage : Le texte est passé dans un optimiseur (normalisation Unicode, suppression des pages).
+Nettoyage : Normalisation Unicode et suppression des artefacts via optimizer.py.
 
-Enrichissement : Ajout d'un front-matter YAML (métadonnées).
+Enrichissement : Ajout d'un front-matter YAML (métadonnées, source, nombre de tokens).
 
-Découpage : Si demandé, le texte est découpé en chunks logiques avec overlap pour le RAG.
+Découpage (Optionnel) : Génération d'un fichier .jsonl où chaque ligne est un chunk contextualisé.
 
-🤝 Contribution
-Les contributions sont les bienvenues ! (N'hésitez pas à ouvrir une Issue ou une Pull Request).
+## 🛠️ Stack Technique
+Interface : CustomTkinter (Python)
 
-📄 Licence
-Distribué sous licence MIT. Voir le fichier LICENSE pour plus d'informations.
+Conversion : Microsoft MarkItDown, Pandas (Excel)
+
+OCR : PyMuPDF, Pytesseract
+
+Architecture : Séparation des responsabilités (UI / Core / Processor) et typage strict.
+
+## 🤝 Contribution
+Les contributions sont les bienvenues. Si vous souhaitez proposer une amélioration, n'hésitez pas à ouvrir une Issue ou à soumettre une Pull Request.
+
+## 📄 Licence
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
