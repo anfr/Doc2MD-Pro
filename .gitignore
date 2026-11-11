@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.spec
+
+# Environnements virtuels
+.venv/
+venv/
+ENV/
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Doc2MD spécifique
+prefs.json
+doc2md/
+*.md.bak
+
+# Visual Studio (AJOUTE CETTE LIGNE)
+.vs/

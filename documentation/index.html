@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc2MD Pro — Documentation complète</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #0b1220;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #334155;
+            --code-bg: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            display: flex;
+        }
+
+        /* SIDEBAR */
+        nav.sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+            nav.sidebar h2 {
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: var(--text-muted);
+                margin-bottom: 16px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            nav.sidebar ul {
+                list-style: none;
+            }
+
+            nav.sidebar li {
+                margin: 2px 0;
+            }
+
+            nav.sidebar a {
+                display: block;
+                padding: 6px 10px;
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 13px;
+                border-radius: 6px;
+                transition: all 0.15s;
+            }
+
+                nav.sidebar a:hover {
+                    background: var(--border);
+                    color: var(--text);
+                }
+
+                nav.sidebar a.chapter {
+                    color: var(--primary);
+                    font-weight: 600;
+                    margin-top: 14px;
+                    font-size: 13px;
+                }
+
+                    nav.sidebar a.chapter:hover {
+                        color: #60a5fa;
+                    }
+
+        /* MAIN */
+        main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 48px 60px 80px;
+            max-width: 1100px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #fff;
+            margin: 40px 0 8px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+            h1:first-of-type {
+                margin-top: 0;
+            }
+
+        h2 {
+            font-size: 24px;
+            color: #fff;
+            margin: 36px 0 12px;
+            padding-left: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #cbd5e1;
+            margin: 24px 0 8px;
+        }
+
+        h4 {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 18px 0 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            margin: 10px 0;
+            color: #cbd5e1;
+        }
+
+        ul, ol {
+            margin: 10px 0 10px 24px;
+            color: #cbd5e1;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        /* CODES */
+        code {
+            background: var(--code-bg);
+            color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "JetBrains Mono", "Consolas", "Monaco", monospace;
+            font-size: 0.88em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin: 14px 0;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+            pre code {
+                background: none;
+                border: none;
+                padding: 0;
+                font-size: inherit;
+            }
+
+        .kw {
+            color: #c084fc;
+        }
+
+        .str {
+            color: #86efac;
+        }
+
+        .cmt {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .num {
+            color: #fca5a5;
+        }
+
+        .fn {
+            color: #93c5fd;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 18px 0;
+        }
+
+        .card-title {
+            font-size: 15px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .card-title .badge {
+                background: var(--primary);
+                color: #fff;
+                font-size: 11px;
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-weight: 600;
+            }
+
+                .card-title .badge.core {
+                    background: var(--accent);
+                }
+
+                .card-title .badge.ui {
+                    background: var(--warning);
+                }
+
+                .card-title .badge.bug {
+                    background: var(--danger);
+                }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover td {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* CALLOUTS */
+        .note, .tip, .warn, .danger {
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+            font-size: 14px;
+        }
+
+        .note {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: var(--primary);
+        }
+
+        .tip {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: var(--accent);
+        }
+
+        .warn {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: var(--warning);
+        }
+
+        .danger {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: var(--danger);
+        }
+
+            .note strong, .tip strong, .warn strong, .danger strong {
+                color: #fff;
+            }
+
+        /* DIAGRAM */
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            flex: 1;
+            min-width: 110px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+        }
+
+            .flow-box.core {
+                border-color: var(--accent);
+            }
+
+            .flow-box.out {
+                border-color: var(--warning);
+            }
+
+        .flow-arrow {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        /* TOC first */
+        .toc-intro {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            padding: 30px 36px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--primary);
+        }
+
+            .toc-intro h1 {
+                border: none;
+                margin: 0 0 12px;
+                padding: 0;
+            }
+
+            .toc-intro p {
+                color: #cbd5e1;
+            }
+
+        /* FILES GRID */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .file-chip {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-family: "JetBrains Mono", monospace;
+            color: var(--primary);
+        }
+
+            .file-chip span {
+                color: var(--text-muted);
+                font-family: sans-serif;
+                display: block;
+                font-size: 11px;
+                margin-top: 2px;
+            }
+
+        @media (max-width: 900px) {
+            nav.sidebar {
+                display: none;
+            }
+
+            main {
+                margin-left: 0;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>Documentation</h2>
+        <ul>
+            <li><a class="chapter" href="#intro">Introduction</a></li>
+
+            <li><a class="chapter" href="#chapitre-1">1. Logique métier</a></li>
+            <li><a href="#pipeline">1.1 Le pipeline global</a></li>
+            <li><a href="#multiprocessing">1.2 Haute Performance (Multiprocessing)</a></li>
+            <li><a href="#nettoyage">1.3 Nettoyage Markdown</a></li>
+            <li><a href="#metadonnees">1.4 Métadonnées</a></li>
+            <li><a href="#ocr">1.5 OCR (Récupération de PDF)</a></li>
+            <li><a href="#chunking">1.6 Smart Chunking (RAG)</a></li>
+            <li><a href="#qualite">1.7 Vérification qualité</a></li>
+
+            <li><a class="chapter" href="#chapitre-2">2. Technique</a></li>
+            <li><a href="#architecture">2.1 Architecture</a></li>
+            <li><a href="#file-config">2.2 config.py</a></li>
+            <li><a href="#file-utils">2.3 utils.py</a></li>
+            <li><a href="#file-optimizer">2.4 core/optimizer.py</a></li>
+            <li><a href="#file-converter">2.5 core/converter.py</a></li>
+            <li><a href="#file-processor">2.6 core/processor.py</a></li>
+            <li><a href="#file-app">2.7 ui/app.py</a></li>
+            <li><a href="#file-main">2.8 main.py</a></li>
+            <li><a href="#file-req">2.9 requirements.txt</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="toc-intro" id="intro">
+            <h1>Doc2MD Pro</h1>
+            <p>Documentation complète — Convertisseur de documents (PDF, Excel, Word) vers Markdown optimisé pour les LLM et les pipelines RAG.</p>
+            <p style="margin-top: 14px; color: var(--text-muted); font-size: 13px;">
+                <strong style="color: #fff;">Version :</strong> 4.0 (Dark Pro) &nbsp;•&nbsp;
+                <strong style="color: #fff;">Python :</strong> 3.10+ &nbsp;•&nbsp;
+                <strong style="color: #fff;">Licence :</strong> usage éducatif / personnel
+            </p>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- ====================  CHAPITRE 1  ============================ -->
+        <!-- ============================================================= -->
+
+        <h1 id="chapitre-1">Chapitre 1 — Logique métier</h1>
+
+        <p>Cette première partie décrit <strong>ce que fait l'application</strong> et <strong>pourquoi</strong>, indépendamment de la façon dont c'est codé. Elle s'adresse aux utilisateurs qui veulent comprendre le comportement de l'outil, ainsi qu'aux développeurs qui souhaitent faire évoluer les traitements.</p>
+
+        <h2 id="pipeline">1.1 — Le pipeline global</h2>
+
+        <p>Le traitement d'un fichier suit toujours la même chaîne, quel que soit son format d'origine :</p>
+
+        <div class="flow">
+            <div class="flow-box">Source<br><small>PDF / XLSX / DOCX</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box core">Extraction<br><small>markitdown / pandas / OCR</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box core">Nettoyage<br><small>optimiser_markdown</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box core">Enrichissement<br><small>métadonnées</small></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box out">Sortie<br><small>.md / .jsonl chunké</small></div>
+        </div>
+
+        <p>Chaque étape est <strong>optionnelle</strong> (sauf l'extraction) et contrôlable depuis l'interface via des cases à cocher. L'utilisateur peut ainsi produire un Markdown brut ou un Markdown "prêt pour RAG" selon ses besoins.</p>
+
+        <h2 id="multiprocessing">1.2 — Haute Performance (Multiprocessing)</h2>
+
+        <p>Pour traiter de gros volumes de fichiers (ex: 100 PDF en une fois), l'application utilise le module <code>concurrent.futures.ProcessPoolExecutor</code> de Python.</p>
+
+        <p>Au lieu de traiter les fichiers un par un de manière séquentielle, l'application crée un "pool" de processus (par défaut, le nombre de cœurs de votre processeur). Chaque fichier est envoyé à un processus libre, qui s'occupe de l'extraire, de le nettoyer et de l'écrire sur le disque de manière totalement indépendante.</p>
+
+        <div class="tip">
+            <strong>Performance :</strong> Sur un PC équipé d'un processeur 8 cœurs, un lot de 100 fichiers peut être traité jusqu'à <strong>8 fois plus vite</strong> par rapport au mode séquentiel, tout en gardant l'interface utilisateur fluide.
+        </div>
+
+        <h2 id="nettoyage">1.3 — Nettoyage Markdown</h2>
+
+        <p>L'extraction brute par <code>markitdown</code> (ou par <code>pandas</code> pour Excel) hérite des artefacts du PDF ou du DOCX d'origine. La fonction <code>optimiser_markdown</code> corrige automatiquement :</p>
+
+        <table>
+            <thead>
+                <tr><th>Artefact</th><th>Cause</th><th>Correction</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Ligatures <code>ﬁ</code>, <code>ﬂ</code></td><td>Encodage PDF</td><td>Normalisation Unicode NFKC</td></tr>
+                <tr><td>Espaces insécables <code>\u00a0</code></td><td>Mise en page Word</td><td>Remplacés par espaces</td></tr>
+                <tr><td>Puces hétérogènes <code>● • ▪</code></td><td>Styles multiples</td><td>Normalisées en <code>-</code></td></tr>
+                <tr><td>Numéros de page isolés</td><td>Pieds de page PDF</td><td>Supprimés</td></tr>
+                <tr><td>Lignes décoratives <code>----</code>, <code>====</code></td><td>Séparateurs visuels</td><td>Supprimées</td></tr>
+                <tr><td>Lignes vides multiples</td><td>Sauts de page</td><td>Compressées (max 1)</td></tr>
+            </tbody>
+        </table>
+
+        <h2 id="metadonnees">1.4 — Métadonnées</h2>
+
+        <p>Chaque fichier Markdown généré reçoit un <strong>front-matter YAML</strong> en tête, contenant des informations exploitables par un pipeline RAG ou par un LLM :</p>
+
+<pre><code>---
+source: "Impératif présent.pdf"
+type: pdf
+converti_le: 2026-11-09T17:36:19
+mots: 2345
+tokens_estimes: 1902
+---</code></pre>
+
+        <p>Ces champs permettent notamment de filtrer les documents par source dans une base vectorielle, et d'estimer la taille du contexte avant envoi à un LLM.</p>
+
+        <h2 id="ocr">1.5 — OCR (Récupération de PDF)</h2>
+
+        <p>Les PDF scannés (images de texte) ou dont la police est corrompue produisent souvent un texte vide ou illisible lors d'une extraction classique.</p>
+
+        <p>L'application intègre une option <strong>OCR (Reconnaissance Optique de Caractères)</strong>. Lorsqu'elle est activée, le moteur ne se contente plus de lire le flux texte du PDF : il convertit chaque page en image haute résolution (300 DPI) et utilise le moteur <strong>Tesseract</strong> pour extraire le texte visuel. C'est plus lent, mais cela permet de récupérer des documents perdus.</p>
+
+        <div class="warn">
+            <strong>Prérequis :</strong> L'OCR nécessite l'installation du logiciel Tesseract sur le système hôte, ainsi que les bibliothèques Python <code>PyMuPDF</code>, <code>pytesseract</code> et <code>Pillow</code>.
+        </div>
+
+        <h2 id="chunking">1.6 — Smart Chunking (RAG)</h2>
+
+        <p>Les bases de données vectorielles (Pinecone, Qdrant, Chroma) et les modèles d'embedding ont une limite de taille de contexte. Envoyer un document entier de 200 pages sur une seule ligne fait échouer l'indexation.</p>
+
+        <p>L'application intègre un algorithme de <strong>Découpage Intelligent (Smart Chunking)</strong>. Au lieu de couper le texte brutalement, il :</p>
+        <ol>
+            <li>Détecte les titres Markdown (<code>#</code>, <code>##</code>, <code>###</code>) pour créer des blocs logiques.</li>
+            <li>Découpe le texte en morceaux d'environ 1500 caractères (paramétrable).</li>
+            <li>Applique un <strong>chevauchement (overlap)</strong> de 200 caractères entre chaque morceau, pour que le modèle d'embedding conserve le contexte entre deux phrases coupées.</li>
+        </ol>
+
+        <p>Le résultat est un fichier <code>.jsonl</code> où chaque ligne représente un chunk, avec son titre d'appartenance et son nombre de tokens estimés.</p>
+
+        <h2 id="qualite">1.7 — Vérification qualité</h2>
+
+        <p>Avant d'écrire le fichier de sortie, une vérification détecte les cas suspects :</p>
+        <ul>
+            <li><strong>Sortie vide :</strong> Le PDF est corrompu, protégé ou vide.</li>
+            <li><strong>Sortie courte (< 500 caractères pour un PDF) :</strong> Le PDF est probablement un scan sans OCR.</li>
+        </ul>
+        <p>Les avertissements n'empêchent pas la génération du fichier, mais sont journalisés et listés dans le bilan final pour que l'utilisateur puisse réagir (ex: activer l'OCR et relancer).</p>
+
+        <!-- ============================================================= -->
+        <!-- ====================  CHAPITRE 2  ============================ -->
+        <!-- ============================================================= -->
+
+        <h1 id="chapitre-2">Chapitre 2 — Architecture technique</h1>
+
+        <p>L'application suit le principe de <strong>séparation des responsabilités</strong>. Chaque module a une mission unique et ne connaît que ce dont il a besoin. Cette architecture facilite les tests unitaires, l'ajout de formats ou le remplacement de l'interface graphique.</p>
+
+        <h2 id="architecture">2.1 — Vue d'ensemble</h2>
+
+<pre><code>doc2md/
+├── main.py                 → point d'entrée
+├── config.py               → constantes et regex
+├── utils.py                → outils génériques
+├── core/                   → logique métier (sans UI)
+│   ├── __init__.py
+│   ├── converter.py        → conversion brute (avec OCR)
+│   ├── optimizer.py        → nettoyage, chunking et métadonnées
+│   └── processor.py        → orchestration multi-processus
+└── ui/
+    ├── __init__.py
+    └── app.py              → interface CustomTkinter (Dark Pro)</code></pre>
+
+        <h2 id="file-config">2.2 — <code>config.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge core">CONFIG</span> Rôle : centraliser les constantes et regex</div>
+            <p>Aucune logique. Définit toutes les valeurs modifiables de l'application, les extensions valides, les limites d'extraction Excel, les valeurs par défaut du chunking, et les expressions régulières précompilées.</p>
+        </div>
+
+        <h2 id="file-utils">2.3 — <code>utils.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge core">CORE</span> Rôle : outils génériques réutilisables</div>
+            <p>Contient des fonctions pures comme <code>estimer_tokens</code>, <code>est_fichier_ignorable</code>, et la classe <code>Preferences</code> qui gère la sauvegarde des choix de l'utilisateur dans un fichier JSON local.</p>
+        </div>
+
+        <h2 id="file-optimizer">2.4 — <code>core/optimizer.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge core">CORE</span> Rôle : transformer le Markdown brut en Markdown optimisé</div>
+            <p>C'est le cœur de la logique métier textuelle. Ce module contient des fonctions <strong>pures</strong> (input texte → output texte) sans aucun effet de bord.</p>
+        </div>
+
+        <h4>Fonctions clés</h4>
+        <ul>
+            <li><code>optimiser_markdown(md)</code> : Nettoie les artefacts (ligatures, puces, pages).</li>
+            <li><code>ajouter_metadonnees(md, source)</code> : Ajoute le front-matter YAML.</li>
+            <li><code>verifier_qualite(md, source)</code> : Détecte les PDF scannés ou vides.</li>
+            <li><code>decouper_markdown(md, max_chars)</code> : <strong>Nouveau</strong>. Découpe intelligemment le Markdown en chunks avec chevauchement pour le RAG.</li>
+        </ul>
+
+        <h2 id="file-converter">2.5 — <code>core/converter.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge core">CORE</span> Rôle : convertir un fichier source en texte brut</div>
+            <p>Encapsule <code>markitdown</code> (PDF/DOCX), <code>pandas</code> (Excel) et <code>pymupdf + pytesseract</code> (OCR).</p>
+        </div>
+
+        <h4>Nouveautés</h4>
+        <ul>
+            <li><code>convertir(path, use_ocr=False)</code> : Gère l'aiguillage vers l'OCR si demandé.</li>
+            <li><code>_convertir_pdf_ocr(path)</code> : Transforme les pages en images et utilise Tesseract pour lire le texte.</li>
+        </ul>
+
+        <h2 id="file-processor">2.6 — <code>core/processor.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge core">CORE</span> Rôle : orchestrer le traitement par lots (Multiprocessing)</div>
+            <p>Ce module ne touche <strong>jamais</strong> à l'UI. Il communique via des callbacks passés au constructeur : <code>log</code>, <code>progress</code>, <code>finish</code>.</p>
+        </div>
+
+        <h4>Le passage au Multiprocessing</h4>
+        <p>Contrairement aux versions précédentes qui utilisaient un simple <code>threading.Thread</code>, le traitement utilise maintenant <code>concurrent.futures.ProcessPoolExecutor</code>.</p>
+<pre><code><span class="kw">with</span> concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) <span class="kw">as</span> executor:
+    futures = {executor.submit(_worker_convertir, tache): tache <span class="kw">for</span> tache <span class="kw">in</span> taches}
+        <span class="kw">for</span> future <span class="kw">in</span> concurrent.futures.as_completed(futures):
+        <span class="cmt"># Traitement des résultats au fur et à mesure</span>
+        res = future.result()
+        ...</code></pre>
+        <p>La fonction <code>_worker_convertir</code> tourne dans un processus isolé. Cela signifie que si un fichier PDF fait planter le convertisseur, cela n'affecte pas le processus principal de l'application.</p>
+
+        <h2 id="file-app">2.7 — <code>ui/app.py</code></h2>
+
+        <div class="card">
+            <div class="card-title"><span class="badge ui">UI</span> Rôle : interface graphique (CustomTkinter - Dark Pro)</div>
+            <p>Ne contient <strong>aucune logique métier</strong>. Toute action est déléguée au <code>BatchProcessor</code>.</p>
+        </div>
+
+        <h4>Design System</h4>
+        <p>L'interface utilise des couleurs sombres (Dark Mode natif), des cartes avec des bordures subtiles, et une sidebar défilante (<code>CTkScrollableFrame</code>) pour ne jamais perdre d'options si la fenêtre est redimensionnée.</p>
+
+        <h4>Nouvelles Options</h4>
+        <ul>
+            <li><strong>Performance :</strong> Un menu déroulant permet de choisir le nombre de cœurs CPU à utiliser.</li>
+            <li><strong>Activer l'OCR :</strong> Une case à cocher pour basculer sur la lecture d'image (plus lente).</li>
+            <li><strong>Découper en morceaux (Chunking) :</strong> Une case à cocher et un champ de texte pour définir la taille des chunks RAG.</li>
+        </ul>
+
+        <h2 id="file-main">2.8 — <code>main.py</code></h2>
+        <p>Point d'entrée minimaliste. Il instancie la classe <code>MarkdownConverterApp</code> et lance la boucle principale Tkinter.</p>
+
+        <h2 id="file-req">2.9 — <code>requirements.txt</code></h2>
+        <p>Utilisé par <code>pip install -r requirements.txt</code> pour installer toutes les dépendances :</p>
+
+<pre><code>customtkinter>=5.2.0
+markitdown>=0.0.1a2
+pandas>=2.0.0
+tabulate>=0.9.0
+openpyxl>=3.1.0
+xlrd>=2.0.1
+PyMuPDF>=1.23.0
+pytesseract>=0.3.10
+Pillow>=10.0.0</code></pre>
+
+        <hr style="margin: 60px 0 30px; border: none; border-top: 1px solid var(--border);">
+        <p style="text-align: center; color: var(--text-muted); font-size: 13px;">
+            Documentation générée pour Doc2MD Pro v4.0 (Dark Pro) — 2026
+        </p>
+
+    </main>
+</body>
+</html>
