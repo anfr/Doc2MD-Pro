@@ -33,24 +33,38 @@ La plupart des convertisseurs se contentent d'extraire le texte brut. Or, pour �
 2. Téléchargez la dernière version de `Doc2MD-Pro-Windows.zip`.
 3. Décompressez le dossier et lancez `main.exe`. 
 *(Aucune installation de Python n'est nécessaire).*
+4. Pas encore installé Git. Téléchargez-le gratuitement sur git-scm.com
 
 ### Pour les développeurs (Code source)
+Si vous êtes curieux, développeur, ou que vous voulez modifier l'application, voici comment la lancer depuis le code source. 
+*Pas de panique si vous n'avez jamais utilisé un terminal : suivez le guide !*
+1. Cloner le dépôt
 ```bash
-# Cloner le dépôt
 git clone https://github.com/anfr/Doc2MD-Pro.git
+```
+2. créer un dossier et nom le par exemple "Doc2MD-Pro"
+
+```bash
 cd Doc2MD-Pro
 ```
+3. Créer un environnement virtuel (recommandé)
+
 ```bash
-# Créer un environnement virtuel (recommandé)
 python -m venv .venv
 .venv\Scripts\activate
 ```
+Pourquoi ? C'est la règle d'or en Python. On crée une "bulle" (appelée .venv) uniquement pour ce projet. Comme ça, les outils qu'on va installer ici ne vont pas "salir" ou ralentir le reste de votre ordinateur. La deuxième ligne active cette bulle (vous verrez souvent (.venv) apparaître au début de votre terminal).
+
+4. Installer les dépendances
+
 ```bash
-# Installer les dépendances
 pip install -r requirements.txt
 ```
+Ce que ça fait : Le fichier requirements.txt est votre liste de courses. Il contient tous les outils dont l'application a besoin.
+
+5. Lancer l'application
+
 ```bash
-# Lancer l'application
 python main.py
 ```
 
