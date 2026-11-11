@@ -9,6 +9,10 @@
 
 **Doc2MD Pro** est une application de bureau (Windows) 100% locale qui transforme vos documents en données exploitables par l'Intelligence Artificielle. Conçu avec une approche "Haute Performance" et "RAG-First", il résout les problèmes que les convertisseurs classiques ignorent.
 
+## 📸 Aperçu
+
+![Interface de Doc2MD Pro](images/apercu.png)
+
 ## ✨ Fonctionnalités clés
 
 - 🚀 **Multiprocessing** : Convertissez des centaines de fichiers simultanément en utilisant tous les cœurs de votre processeur.
